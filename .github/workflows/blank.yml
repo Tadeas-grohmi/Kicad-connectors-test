@@ -26,6 +26,29 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Debug checkout
+        run: |
+          echo "Current directory:"
+          pwd
+      
+          echo "Branch / commit:"
+          git branch --show-current || true
+          git rev-parse HEAD
+      
+          echo "GITHUB_REF=$GITHUB_REF"
+          echo "GITHUB_SHA=$GITHUB_SHA"
+          echo "GITHUB_WORKSPACE=$GITHUB_WORKSPACE"
+      
+          echo "Files:"
+          ls -la
+      
+          echo "KiCad files:"
+          find . -maxdepth 2 -type f \( \
+            -name "*.kicad_pcb" -o \
+            -name "*.kicad_sch" -o \
+            -name "*.kicad_pro" \
+          \) -print
+
       - name: Show KiBot and KiCad versions
         run: |
           kibot --version
