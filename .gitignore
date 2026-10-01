@@ -1,0 +1,53 @@
+# -----------------------------
+# KiCad temporary / backup files
+# -----------------------------
+
+# Lock files
+~*.lck
+*.lck
+
+# Backup folders
+*-backups/
+
+# Backup files
+*.bak
+*.kicad_pro-bak
+*.kicad_sch-bak
+*.kicad_pcb-bak
+
+# User-specific KiCad settings
+*.kicad_prl
+
+
+# -----------------------------
+# KiBot generated output
+# -----------------------------
+
+output/
+Dokumentace/
+
+
+# -----------------------------
+# OS / editor junk
+# -----------------------------
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
+
+# VS Code
+.vscode/
+
+# JetBrains
+.idea/
+
+
+# -----------------------------
+# Python cache
+# -----------------------------
+
+__pycache__/
+*.pyc

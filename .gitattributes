@@ -1,0 +1,31 @@
+# Normalize text files to LF in the repository
+* text=auto eol=lf
+
+# KiCad source files are text
+*.kicad_pro text eol=lf
+*.kicad_sch text eol=lf
+*.kicad_pcb text eol=lf
+*.kicad_sym text eol=lf
+*.kicad_mod text eol=lf
+
+# YAML / config / scripts
+*.yml  text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
+*.md   text eol=lf
+*.txt  text eol=lf
+*.py   text eol=lf
+*.sh   text eol=lf
+
+# Windows batch files should stay CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary/generated files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.pdf binary
+*.step binary
+*.stp binary
+*.zip binary

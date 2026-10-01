@@ -1,0 +1,45 @@
+kibot:
+  version: 1
+
+outputs:
+
+  # Realistic PCB render - TOP
+  - name: 'Realisticky_Render_PNG_top'
+    comment: 'Render desky s průhledným pozadím'
+    type: pcbdraw
+    dir: 'Dokumentace/Render'
+    options:
+      format: png
+      style: oshpark-afterdark
+      ortho: true
+      show_components: "all"
+      dpi: 600
+
+  # Realistic PCB render - BOTTOM
+  - name: 'Realisticky_Render_PNG_bottom'
+    comment: 'Render desky s průhledným pozadím'
+    type: pcbdraw
+    dir: 'Dokumentace/Render'
+    options:
+      format: png
+      bottom: true
+      style: oshpark-afterdark
+      show_components: "all"
+      dpi: 600
+
+  # KiCad 3D render
+  - name: 'Realisticky_3D_Render_PNG_top'
+    comment: '3D render desky'
+    type: render_3d
+    dir: 'Dokumentace/Render'
+    options:
+      view: top
+      width: 1920
+      height: 1080
+      ray_tracing: false
+
+  # Schematic PDF
+  - name: 'Schema_PDF'
+    comment: 'Kompletní schéma zapojení v PDF'
+    type: pdf_sch_print
+    dir: 'Dokumentace/PDF'
