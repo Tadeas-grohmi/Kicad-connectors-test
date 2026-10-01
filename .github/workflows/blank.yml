@@ -23,12 +23,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
-      # Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Select KiBot config according to branch
       - name: Select KiBot configuration
         id: kibot_config
         shell: bash
@@ -39,16 +36,12 @@ jobs:
             echo "config=kibot/dev.kibot.yaml" >> "$GITHUB_OUTPUT"
           fi
 
-      # Run KiBot
       - name: Run KiBot
-        uses: INTI-CMNB/KiBot@v2
+        uses: INTI-CMNB/KiBot@v2_k6
         with:
           config: ${{ steps.kibot_config.outputs.config }}
-          board: '*.kicad_pcb'
-          schema: '*.kicad_sch'
           dir: output
 
-      # Upload generated documentation
       - name: Upload KiBot output
         uses: actions/upload-artifact@v4
         with:
