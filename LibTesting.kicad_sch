@@ -21966,7 +21966,7 @@
 	)
 	(symbol
 		(lib_id "MACH_lib_moduly:USB_SSD_DOM")
-		(at 394.97 137.16 0)
+		(at 394.97 143.51 0)
 		(unit 1)
 		(body_style 1)
 		(exclude_from_sim no)
@@ -21977,7 +21977,7 @@
 		(fields_autoplaced yes)
 		(uuid "8976fd50-d1a2-4371-b001-53b0b2dcd0d0")
 		(property "Reference" "SSD1"
-			(at 394.97 124.46 0)
+			(at 394.97 130.81 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -21987,7 +21987,7 @@
 			)
 		)
 		(property "Value" "USB_SSD_DOM"
-			(at 394.97 127 0)
+			(at 394.97 133.35 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -21997,7 +21997,7 @@
 			)
 		)
 		(property "Footprint" "MACH_lib_moduly:USB_SSD_DOM"
-			(at 395.478 151.384 0)
+			(at 395.478 157.734 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -22008,7 +22008,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 394.97 137.16 0)
+			(at 394.97 143.51 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
@@ -22019,7 +22019,7 @@
 			)
 		)
 		(property "Description" ""
-			(at 394.97 137.16 0)
+			(at 394.97 143.51 0)
 			(hide yes)
 			(show_name no)
 			(do_not_autoplace no)
