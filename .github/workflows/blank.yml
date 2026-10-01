@@ -1,49 +1,103 @@
-name: KiBot
+name: KiCad KiBot Automation
 
 on:
+  workflow_dispatch:
+
   push:
     branches:
       - dev
       - main
 
-    paths:
-      - '**/*.kicad_sch'
-      - '**/*.kicad_pcb'
-      - '**/*.kicad_pro'
-      - 'kibot/**'
-      - '.github/workflows/kibot.yml'
-
   pull_request:
     branches:
-      - dev
       - main
 
+permissions:
+  contents: write
+
 jobs:
-  kibot:
+  generate_documentation:
     runs-on: ubuntu-latest
+
+    container:
+      image: ghcr.io/inti-cmnb/kicad10_auto_full:latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Select KiBot configuration
-        id: kibot_config
+      - name: Show KiBot and KiCad versions
+        run: |
+          kibot --version
+          kicad-cli version || true
+
+      - name: Find KiCad project files
+        id: project
         shell: bash
         run: |
-          if [[ "${GITHUB_BASE_REF:-${GITHUB_REF_NAME}}" == "main" ]]; then
-            echo "config=kibot/main.kibot.yaml" >> "$GITHUB_OUTPUT"
-          else
-            echo "config=kibot/dev.kibot.yaml" >> "$GITHUB_OUTPUT"
+          PCB=$(find . -maxdepth 1 -name "*.kicad_pcb" -print -quit)
+          SCH=$(find . -maxdepth 1 -name "*.kicad_sch" -print -quit)
+
+          if [ -z "$PCB" ]; then
+            echo "ERROR: No .kicad_pcb file found in repository root"
+            exit 1
           fi
 
-      - name: Run KiBot
-        uses: INTI-CMNB/KiBot@v2_k6
-        with:
-          config: ${{ steps.kibot_config.outputs.config }}
-          dir: output
+          if [ -z "$SCH" ]; then
+            echo "ERROR: No .kicad_sch file found in repository root"
+            exit 1
+          fi
 
-      - name: Upload KiBot output
+          echo "pcb=$PCB" >> "$GITHUB_OUTPUT"
+          echo "sch=$SCH" >> "$GITHUB_OUTPUT"
+
+          echo "PCB: $PCB"
+          echo "SCH: $SCH"
+
+      - name: DEV build
+        if: github.ref == 'refs/heads/dev'
+        run: |
+          kibot \
+            -b "${{ steps.project.outputs.pcb }}" \
+            -e "${{ steps.project.outputs.sch }}" \
+            -c kibot/dev.kibot.yaml
+
+      - name: MAIN build
+        if: github.ref == 'refs/heads/main'
+        run: |
+          kibot \
+            -b "${{ steps.project.outputs.pcb }}" \
+            -e "${{ steps.project.outputs.sch }}" \
+            -c kibot/main.kibot.yaml
+
+      - name: Pull request build
+        if: github.event_name == 'pull_request'
+        run: |
+          kibot \
+            -b "${{ steps.project.outputs.pcb }}" \
+            -e "${{ steps.project.outputs.sch }}" \
+            -c kibot/main.kibot.yaml
+
+      - name: Upload generated documentation
         uses: actions/upload-artifact@v4
         with:
-          name: kibot-${{ github.ref_name }}
-          path: output
+          name: Dokumentace_${{ github.ref_name }}
+          path: Dokumentace/
+          retention-days: 7
+
+      - name: Commit generated documentation
+        if: github.event_name == 'push'
+        shell: bash
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+          git add -f Dokumentace/
+
+          if git diff --cached --quiet; then
+            echo "No documentation changes to commit"
+          else
+            git commit -m "Automated KiBot documentation export [skip ci]"
+            git push
+          fi
